@@ -1,0 +1,61 @@
+.error {
+    color: red;
+}
+.alert {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    z-index: 1;
+} 
+
+.alert-enter {
+    transition: opacity 500ms ease !important;
+    opacity: 0 !important;
+}  
+
+.alert-enter-done {    
+    transition: opacity 500ms ease !important;
+    opacity: 1 !important;
+}
+
+/* .alert-enter-active {
+    transition: opacity 500ms ease !important;
+    opacity: 0 !important;
+}   */
+
+.alert-exit-active {
+    transition: opacity 350ms ease-out !important;
+    opacity: 0 !important;
+} 
+
+/*Items Transition*/
+.item-enter {
+    opacity: 0;
+}
+
+.item-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.item-exit {
+    opacity: 1;
+}
+
+.item-exit-active {
+    opacity: 0;
+    transition: opacity 350ms ease-in;
+}
+.loading{
+    position: absolute;
+    contain: "Loading...";    
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: black;
+    opacity: 0.7;
+    color: white;
+    z-index: 2;
+
+}

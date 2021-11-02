@@ -1,201 +1,446 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+// https://github.com/AugustoRavazoli/react-weather-app/blob/main/src/App.js
 import React, { useEffect } from 'react'
+import moment from 'moment'
+import 'moment/locale/ru'
+import { useParams } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
+import {
+  Button, Card, Grid, Paper
+} from '@mui/material'
+import { makeStyles, styled } from '@material-ui/styles'
+import { createTheme, ThemeProvider } from '@material-ui/core/styles'
+import Stack from '@material-ui/core/Stack'
+import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/styles'
-import { NavLink, useParams } from 'react-router-dom'
-import Fab from '@material-ui/core/Fab'
-import NavigationIcon from '@material-ui/icons/Navigation'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
-  Card,
-  CardContent,
-  Grid,
-  ImageList, ImageListItem, ImageListItemBar
+  Box, CardContent,
 } from '@material-ui/core'
-import { CitysWeather, OneCall } from '../types'
-import { useHttp } from '../hooks/http.hook'
-import { useCitys } from '../hooks/citys.hook'
-import {
-  addOneCallActionCreator,
-  removeOneCallActionCreator
-} from '../redux-toolkit'
-import './detailForecast.css'
+import { useDetailed } from '../hooks/detailed.hook'
+import { everyN, giveColor } from '../components/functionHelper'
 
-const useStyles = makeStyles({
-  fullWidth: {
-    textAlign: 'center',
+const theme = createTheme()
+const useStyles = makeStyles(({
+  root: {
+    color: theme.palette.primary.main
   },
-  button: {
-    height: '40px',
+  test: {
+    backgroundColor: '#cecee',
   },
-  buttom: {
-    marginBottom: '40px',
+  card: {
+    backgroundImage: 'url(https://media.istockphoto.com/photos/the-changes-of-weather-a-natural-phenomenon-of-the-differences-of-picture-id1257525705?b=1&k=20&m=1257525705&s=170667a&w=0&h=8APfi2HN3sWhvfqC5CHs0dkhMDpX1reiiOOD2sBJAj4=)',
+    backgroundColor: '#cecece',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    minHeight: '200px',
+    marginBottom: '20px',
   },
-  navlink: {
-    textDecoration: 'none',
+  cardContentMain: {
+    backgroundColor: '#96c1e22b'
   },
-  backgroundIcon: {
-    background: '#9fa6ab8a',
-    textAlign: 'center',
+  cardDaily: {
+    '& .css-13i4rnv-MuiGrid-root': {
+      marginBottom: '30px',
+    },
+    '& img': {
+      width: '80px',
+      backgroundColor: 'orange'
+    }
+  },
+  c: {
+    marginRight: '10px',
+  },
+  itemsDealy: {
+    marginBottom: '20px',
+    '& span': {
+      marginBottom: '10px'
+    },
+    '& img': {
+      backgroundColor: '#cecece',
+    },
+    '& .css-1clyo4s-MuiStack-root': {
+      marginBottom: '20px',
+    },
+    '& .css-0': {
+      height: '100px',
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+  },
+  textCapitalize: {
     textTransform: 'capitalize',
-    marginRight: '20px',
   },
-  backgroundImg: {
-    background: '#9fa6ab8a',
-    textAlign: 'center',
-    textTransform: 'capitalize',
+  typographyH2: {
+    marginBottom: '20px !important'
   }
-})
+}))
+const Item = styled(Paper)(() => ({
+  textAlign: 'center',
+  minHeight: '250px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'end',
+}))
+const AvatarMain = styled(Avatar)(() => ({
+  height: '70px !important',
+  width: '70px !important',
+}))
+export const DetailForecast = () => {
+  const { slug } = useParams<Slug>()
+  const classes = useStyles()
+  const dataOneCalls = useSelector((state: any) => state.oneCall)
+  const { createDetailed } = useDetailed()
+  const ItemsDealy = () => {
+    const currentID = dataOneCalls[0] ? dataOneCalls[0].hourly : []
+    const DayToDayH = dataOneCalls[0]
+      ? everyN(currentID, 3)
+      : []
+    return DayToDayH.slice(0, 9).map((el: Hourly): JSX.Element => {
+      const t = `${Math.ceil(el.temp)}`
+      // eslint-disable-next-line no-plusplus
+      let g = 0
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i <= +t; i++) {
+        g += 3
+      }
+      const styleTest = {
+        padding: `${+t < 0 ? (g / 50) * 100 : 0}% 0 ${+t >= 0 ? (g / 50) * 100 : 0}% 0`
+      }
+      const paperTempHour = {
+        padding: '3px 7px',
+        background: `${giveColor(+t)}`,
+      }
+      const dealyAvatar = `http://openweathermap.org/img/wn/${el.weather
+        .map((item: Weather) => item.icon)}@2x.png`
+      return (
+        <Grid
+          item
+          key={el.dt}
+          className={classes.itemsDealy}
+        >
+          <Box component="span">
+            <Typography component="span">
+              { moment.unix(el.dt).locale('ru').format('ddd') }
+            </Typography>
+            <Typography component="span">
+              { moment.unix(el.dt).hours() }
+              :
+              { moment.unix(el.dt).minutes() }
+              0
+            </Typography>
+          </Box>
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Avatar
+              alt="Remy Sharp"
+              src={dealyAvatar}
+            />
+          </Stack>
+          <Box component="div" style={styleTest}>
+            <Paper variant="outlined" style={paperTempHour}>
+              {Math.ceil(el.temp)}
+              °С
+            </Paper>
+          </Box>
+        </Grid>
+      )
+    })
+  }
+  const WeatherToDay = () => {
+    const currentTemp = `${Math.ceil(dataOneCalls[0] && dataOneCalls[0].current.temp)}°С`
+    const feelsLike = `${Math.ceil(dataOneCalls[0] && dataOneCalls[0].current.feels_like)}°C`
+    const curentAvater = `http://openweathermap.org/img/wn/${dataOneCalls[0] && dataOneCalls[0].current.weather[0].icon}@2x.png`
+    const curentAvaterStyle = {
+      backgroundColor: '#ec6e4cf2',
+    }
+    return (
+      <Item>
+        <Card className={classes.card}>
+          <CardContent className={classes.cardContentMain}>
+            <Typography
+              variant="caption"
+              component="div"
+              textAlign="start"
+            >
+              В данный момент
+            </Typography>
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Grid item xs={10} textAlign="start">
+                <Grid container>
+                  <Typography
+                    component="span"
+                    variant="h4"
+                    flexGrow={1}
+                  >
+                    {currentTemp}
+                  </Typography>
+                  <Box
+                    component="div"
+                    alignItems="self-end"
+                    flexGrow={15}
+                  >
+                    <Typography variant="body2" color="text.secondary">
+                      <strong>По ощущениям: </strong>
+                      {' '}
+                      {feelsLike}
+                      {' '}
+                      {dataOneCalls[0] && dataOneCalls[0].current.weather[0].description}
+                      <br />
+                      <strong>Скорость ветра:</strong>
+                      {' '}
+                      {dataOneCalls[0] && dataOneCalls[0].current.wind_speed}
+                      {' '}
+                      М/С
+                      <br />
+                      <strong>Восход:</strong>
+                      {' '}
+                      {moment.unix(dataOneCalls[0] && dataOneCalls[0].current.sunrise).hours()}
+                      :
+                      {moment.unix(dataOneCalls[0] && dataOneCalls[0].current.sunrise).minutes()}
+                      <br />
+                      <strong>Закат:</strong>
+                      {' '}
+                      {moment.unix(dataOneCalls[0] && dataOneCalls[0].current.sunset).hours()}
+                      :
+                      {moment.unix(dataOneCalls[0] && dataOneCalls[0].current.sunset).minutes()}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+              <Grid item xs={2}>
+                <Stack direction="row" justifyContent="end">
+                  <AvatarMain
+                    alt="Remy Sharp"
+                    src={curentAvater}
+                    style={curentAvaterStyle}
+                  />
+                </Stack>
+              </Grid>
+            </Grid>
+          </CardContent>
 
+        </Card>
+        <Grid
+          container
+          justifyContent="space-between"
+        >
+          <ItemsDealy />
+        </Grid>
+
+      </Item>
+    )
+  }
+  useEffect(() => {
+    const reg = /[a-z][a-z0-9]*=\d+(\.\d+)?/g
+    const coord = window.location.href.match(reg)
+    if (coord) {
+      createDetailed(coord[0], coord[1])
+    }
+  }, [createDetailed])
+  return (
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="md">
+        <Button href="/"> На главную </Button>
+        <Typography component="h2" className={classes.typographyH2}>
+          <strong>Погода на cегодня</strong>
+          {' '}
+          <strong>{ slug }</strong>
+        </Typography>
+        <WeatherToDay />
+        <br />
+        <Typography component="h2" className={classes.typographyH2}>
+          <strong>Суточный прогноз на 8 дней</strong>
+        </Typography>
+        <Grid
+          container
+          justifyContent="space-between"
+          alignSelf="center"
+          alignItems="center"
+          className={classes.cardDaily}
+        >
+          {dataOneCalls[0] && dataOneCalls[0].daily.map((el: Daily) => {
+            const dealyAvatar = `http://openweathermap.org/img/wn/${el.weather
+              .map((item: Weather) => item.icon)}@2x.png`
+            return (
+              <Grid
+                item
+                key={el.dt}
+              >
+                <Card>
+                  <CardContent>
+                    <Typography component="span">
+                      <strong>Дата:</strong>
+                      <br />
+                      { moment.unix(el.dt).locale('ru').format('dddd') }
+                      {' '}
+                      { moment.unix(el.dt).date()}
+                      .
+                      { moment.unix(el.dt).month()}
+                    </Typography>
+                    <br />
+                    <Typography component="span">
+                      <strong>Описание:</strong>
+                      <br />
+                      { el.weather.map((item: Weather) => item.description) }
+                    </Typography>
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                      <Avatar
+                        alt="alt"
+                        src={dealyAvatar}
+                      />
+                    </Stack>
+                    <Typography component="span">
+                      <strong>По ощущениям:</strong>
+                      <br />
+                      Утром:
+                      {' '}
+                      {Math.ceil(el.feels_like.morn)}
+                      °С
+                      <br />
+                      Днем:
+                      {' '}
+                      {Math.ceil(el.feels_like.day)}
+                      °С
+                      <br />
+                      Вечером:
+                      {' '}
+                      { Math.ceil(el.feels_like.eve) }
+                      °С
+                      <br />
+                      Ночью:
+                      {' '}
+                      { Math.ceil(el.feels_like.day) }
+                      °С
+                    </Typography>
+                    <br />
+                    <Typography component="span">
+                      <strong>Скорость ветра:</strong>
+                      {' '}
+                      {el.wind_speed}
+                      {' '}
+                      М/С
+                    </Typography>
+                    <br />
+                    <Typography component="span">
+                      <strong>Восход:</strong>
+                      {' '}
+                      {moment.unix(el.sunrise).hours()}
+                      :
+                      {moment.unix(el.sunrise).minutes()}
+                    </Typography>
+                    <br />
+                    <Typography component="span">
+                      <strong>Закат:</strong>
+                      {' '}
+                      {moment.unix(el.sunset).hours()}
+                      :
+                      {moment.unix(el.sunset).minutes()}
+                    </Typography>
+                    <br />
+                    <Typography component="span">
+                      <strong>Восход луны:</strong>
+                      {' '}
+                      {moment.unix(el.moonrise).hours()}
+                      :
+                      {moment.unix(el.moonrise).minutes()}
+                    </Typography>
+                    <br />
+                    <Typography component="span">
+                      <strong>Закат луны:</strong>
+                      {' '}
+                      {moment.unix(el.moonset).hours()}
+                      :
+                      {moment.unix(el.moonset).minutes()}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )
+          })}
+        </Grid>
+      </Container>
+    </ThemeProvider>
+  )
+}
 type Slug = {
   slug: string
 }
-
-export const DetailForecast = (): JSX.Element => {
-  const classes = useStyles()
-  const { checkCity } = useCitys()
-  const distpath = useDispatch()
-  const { error, request } = useHttp()
-  const resOneCall = useSelector((state: any) => state.oneCall)
-  const city = useSelector((state: any) => state.shortForecast)
-  const { slug } = useParams<Slug>()
-  const rez = city.find((el:CitysWeather) => el.name === slug)
-  useEffect(() => {
-    if (rez) {
-      // eslint-disable-next-line max-len
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-      const oneCall = async (lonc: number, latc: number) => {
-        const response = await request(
-          // eslint-disable-next-line max-len
-          `https://api.openweathermap.org/data/2.5/onecall?lat=${latc}&lon=${lonc}&units=metric&lang=ru`
-        )
-        if (response) {
-          const test = resOneCall.filter((el: any) => el.lat !== rez.coord.lat)
-          distpath(removeOneCallActionCreator(test))
-          distpath(addOneCallActionCreator(response))
-        }
-      }
-      oneCall(rez.coord.lon, rez.coord.lat)
-    }
-  }, [rez, request, error, distpath, checkCity])
-
-  const feelsLike = resOneCall.map((el: OneCall) => (
-    <>
-      {el.current.weather.map((weathers) => (
-
-        <CardContent>
-          <Grid
-            container
-            alignItems="center"
-            justifyContent="flex-start"
-            className={classes.buttom}
-          >
-            <ImageListItem className={classes.backgroundIcon}>
-              <ImageListItemBar position="below" title={weathers.description} />
-              <img
-                src={`http://openweathermap.org/img/wn/${weathers.icon}@2x.png`}
-                srcSet={`http://openweathermap.org/img/wn/${weathers.icon}@2x.png`}
-                alt={weathers.description}
-                loading="lazy"
-              />
-            </ImageListItem>
-            <Typography
-              align="left"
-              variant="h6"
-              component="span"
-              gutterBottom
-            >
-              { el.timezone}
-              <br />
-              По ощущениям:
-              {' '}
-              { el.current.feels_like}
-              &deg;
-              <br />
-              Влажность:
-              {' '}
-              { el.current.humidity}
-              {' '}
-              %
-              <br />
-              Облачность:
-              {' '}
-              { el.current.clouds}
-              {' '}
-              %
-              <br />
-              Скорость ветра:
-              {' '}
-              { el.current.wind_speed}
-              м/с
-            </Typography>
-          </Grid>
-        </CardContent>
-
-      ))}
-    </>
-  ))
-  const Hourly = resOneCall.map((el: OneCall) => (
-    <Grid
-      container
-      alignItems="center"
-      justifyContent="space-around"
-      spacing={8}
-    >
-      {el.hourly.map((ell: any) => (
-        <Grid item>
-          <Card sx={{ minWidth: 275, maxWidth: 300 }}>
-            <CardContent>
-              {ell.weather.map((els: any) => (
-                <ImageList variant="masonry" className={classes.backgroundImg}>
-                  <ImageListItem cols={1} key={els.id}>
-                    <img
-                      src={`http://openweathermap.org/img/wn/${els.icon}@2x.png`}
-                      srcSet={`http://openweathermap.org/img/wn/${els.icon}@2x.png`}
-                      alt={els.description}
-                      loading="lazy"
-                    />
-                    <ImageListItemBar position="below" title={els.description} />
-                  </ImageListItem>
-                </ImageList>
-              ))}
-              Температура:
-              { ell.temp }
-              &deg;
-              <br />
-              По ощущениям:
-              { ell.feels_like}
-              &deg;
-              <br />
-              Облачность:
-              { ell.clouds}
-              %
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-
-    </Grid>
-
-  ))
-  return (
-    <Container maxWidth="xl">
-      <NavLink to="/" className={classes.navlink}>
-        <Fab variant="extended">
-          <NavigationIcon />
-          На главную
-        </Fab>
-      </NavLink>
-      <Typography
-        className={classes.fullWidth}
-        variant="h2"
-        component="div"
-        gutterBottom
-      >
-        Подробно о погоде
-      </Typography>
-      {feelsLike}
-      {Hourly}
-    </Container>
-  )
+const weather = {
+  id: 803,
+  main: 'Clouds',
+  description: 'облачно с прояснениями',
+  icon: '04d'
 }
+type Weather = typeof weather
+const daily = {
+  dt: 1632560400,
+  sunrise: 1632540345,
+  sunset: 1632583656,
+  moonrise: 1632590280,
+  moonset: 1632556920,
+  moon_phase: 0.64,
+  temp: {
+    day: 10.99,
+    min: 8.76,
+    max: 13.53,
+    night: 11.76,
+    eve: 13.1,
+    morn: 9.31
+  },
+  feels_like: {
+    day: 10.29,
+    night: 11.11,
+    eve: 12.16,
+    morn: 8.7
+  },
+  pressure: 1008,
+  humidity: 82,
+  dew_point: 8.04,
+  wind_speed: 5.26,
+  wind_deg: 290,
+  wind_gust: 9.71,
+  weather: [
+    {
+      id: 803,
+      main: 'Clouds',
+      description: 'облачно с прояснениями',
+      icon: '04d'
+    }
+  ],
+  clouds: 75,
+  pop: 0.36,
+  uvi: 2.3
+}
+type Daily = typeof daily
+const hourly = {
+  dt: 1632556800,
+  temp: 10.94,
+  feels_like: 10.26,
+  pressure: 1008,
+  humidity: 83,
+  dew_point: 8.17,
+  uvi: 1.47,
+  clouds: 80,
+  visibility: 10000,
+  wind_speed: 1.97,
+  wind_deg: 225,
+  wind_gust: 2.6,
+  weather: [
+    {
+      id: 803,
+      main: 'Clouds',
+      description: 'облачно с прояснениями',
+      icon: '04d'
+    }
+  ],
+  pop: 0.04
+}
+type Hourly = typeof hourly
