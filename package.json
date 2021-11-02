@@ -40,12 +40,14 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "homepage": "https://denisavilov.github.io/weatherForecast/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DenisAvilov/weatherForecast.git"
+    "url": "git+https://github.com/DenisAvilov/weatherForecast.git"
   },
   "eslintConfig": {
     "extends": [
