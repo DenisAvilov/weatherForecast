@@ -45,6 +45,327 @@ const citys = {
 
 export type CitysWeather = typeof citys
 
+const daily = [
+  {
+    dt: 1632560400,
+    sunrise: 1632540345,
+    sunset: 1632583656,
+    moonrise: 1632590280,
+    moonset: 1632556920,
+    moon_phase: 0.64,
+    temp: {
+      day: 10.99,
+      min: 8.76,
+      max: 13.53,
+      night: 11.76,
+      eve: 13.1,
+      morn: 9.31
+    },
+    feels_like: {
+      day: 10.29,
+      night: 11.11,
+      eve: 12.16,
+      morn: 8.7
+    },
+    pressure: 1008,
+    humidity: 82,
+    dew_point: 8.04,
+    wind_speed: 5.26,
+    wind_deg: 290,
+    wind_gust: 9.71,
+    weather: [
+      {
+        id: 803,
+        main: 'Clouds',
+        description: 'облачно с прояснениями',
+        icon: '04d'
+      }
+    ],
+    clouds: 75,
+    pop: 0.36,
+    uvi: 2.3
+  },
+  {
+    dt: 1632646800,
+    sunrise: 1632626835,
+    sunset: 1632669923,
+    moonrise: 1632678180,
+    moonset: 1632647400,
+    moon_phase: 0.67,
+    temp: {
+      day: 13.27,
+      min: 10.02,
+      max: 15.23,
+      night: 10.02,
+      eve: 11.91,
+      morn: 12.49
+    },
+    feels_like: {
+      day: 12.48,
+      night: 9.04,
+      eve: 10.83,
+      morn: 12.12
+    },
+    pressure: 1013,
+    humidity: 70,
+    dew_point: 7.96,
+    wind_speed: 7.07,
+    wind_deg: 314,
+    wind_gust: 12.6,
+    weather: [
+      {
+        id: 500,
+        main: 'Rain',
+        description: 'небольшой дождь',
+        icon: '10d'
+      }
+    ],
+    clouds: 49,
+    pop: 0.32,
+    rain: 0.45,
+    uvi: 1.67
+  },
+  {
+    dt: 1632733200,
+    sunrise: 1632713325,
+    sunset: 1632756190,
+    moonrise: 1632766500,
+    moonset: 1632737820,
+    moon_phase: 0.7,
+    temp: {
+      day: 11.85,
+      min: 7.12,
+      max: 14.33,
+      night: 9.77,
+      eve: 12.83,
+      morn: 7.12
+    },
+    feels_like: {
+      day: 10.81,
+      night: 8.16,
+      eve: 11.87,
+      morn: 4.31
+    },
+    pressure: 1019,
+    humidity: 66,
+    dew_point: 5.85,
+    wind_speed: 5.06,
+    wind_deg: 8,
+    wind_gust: 10.53,
+    weather: [
+      {
+        id: 500,
+        main: 'Rain',
+        description: 'небольшой дождь',
+        icon: '10d'
+      }
+    ],
+    clouds: 100,
+    pop: 0.36,
+    rain: 0.13,
+    uvi: 2.21
+  },
+  {
+    dt: 1632819600,
+    sunrise: 1632799816,
+    sunset: 1632842458,
+    moonrise: 1632855300,
+    moonset: 1632827880,
+    moon_phase: 0.73,
+    temp: {
+      day: 12.42,
+      min: 8.32,
+      max: 13.36,
+      night: 10.61,
+      eve: 11.55,
+      morn: 8.38
+    },
+    feels_like: {
+      day: 11.31,
+      night: 9.58,
+      eve: 10.51,
+      morn: 6.98
+    },
+    pressure: 1026,
+    humidity: 61,
+    dew_point: 5.24,
+    wind_speed: 4.12,
+    wind_deg: 42,
+    wind_gust: 7.3,
+    weather: [
+      {
+        id: 500,
+        main: 'Rain',
+        description: 'небольшой дождь',
+        icon: '10d'
+      }
+    ],
+    clouds: 100,
+    pop: 0.2,
+    rain: 0.31,
+    uvi: 1.17
+  },
+  {
+    dt: 1632906000,
+    sunrise: 1632886306,
+    sunset: 1632928726,
+    moonrise: 1632944760,
+    moonset: 1632917580,
+    moon_phase: 0.75,
+    temp: {
+      day: 10.66,
+      min: 6.53,
+      max: 12.85,
+      night: 9.22,
+      eve: 11.86,
+      morn: 6.53
+    },
+    feels_like: {
+      day: 9.48,
+      night: 7.81,
+      eve: 10.35,
+      morn: 4.29
+    },
+    pressure: 1032,
+    humidity: 65,
+    dew_point: 4.45,
+    wind_speed: 4.08,
+    wind_deg: 63,
+    wind_gust: 7.03,
+    weather: [
+      {
+        id: 500,
+        main: 'Rain',
+        description: 'небольшой дождь',
+        icon: '10d'
+      }
+    ],
+    clouds: 98,
+    pop: 0.2,
+    rain: 0.13,
+    uvi: 2.61
+  },
+  {
+    dt: 1632992400,
+    sunrise: 1632972797,
+    sunset: 1633014994,
+    moonrise: 1633034880,
+    moonset: 1633006680,
+    moon_phase: 0.79,
+    temp: {
+      day: 12.39,
+      min: 5.74,
+      max: 14.22,
+      night: 10.01,
+      eve: 12.58,
+      morn: 5.74
+    },
+    feels_like: {
+      day: 10.57,
+      night: 8.16,
+      eve: 10.81,
+      morn: 3.66
+    },
+    pressure: 1034,
+    humidity: 34,
+    dew_point: -2.76,
+    wind_speed: 3.92,
+    wind_deg: 92,
+    wind_gust: 8.12,
+    weather: [
+      {
+        id: 801,
+        main: 'Clouds',
+        description: 'небольшая облачность',
+        icon: '02d'
+      }
+    ],
+    clouds: 14,
+    pop: 0,
+    uvi: 3
+  },
+  {
+    dt: 1633078800,
+    sunrise: 1633059288,
+    sunset: 1633101262,
+    moonrise: 0,
+    moonset: 1633095300,
+    moon_phase: 0.82,
+    temp: {
+      day: 13.27,
+      min: 6.39,
+      max: 14.94,
+      night: 10.63,
+      eve: 12.9,
+      morn: 6.39
+    },
+    feels_like: {
+      day: 11.44,
+      night: 8.69,
+      eve: 11.03,
+      morn: 4.39
+    },
+    pressure: 1029,
+    humidity: 30,
+    dew_point: -3.96,
+    wind_speed: 4.24,
+    wind_deg: 101,
+    wind_gust: 7.3,
+    weather: [
+      {
+        id: 802,
+        main: 'Clouds',
+        description: 'переменная облачность',
+        icon: '03d'
+      }
+    ],
+    clouds: 32,
+    pop: 0,
+    uvi: 3
+  },
+  {
+    dt: 1633165200,
+    sunrise: 1633145780,
+    sunset: 1633187531,
+    moonrise: 1633125420,
+    moonset: 1633183440,
+    moon_phase: 0.85,
+    temp: {
+      day: 13.52,
+      min: 7.32,
+      max: 15.25,
+      night: 11.38,
+      eve: 13.31,
+      morn: 7.32
+    },
+    feels_like: {
+      day: 11.84,
+      night: 9.59,
+      eve: 11.58,
+      morn: 6.6
+    },
+    pressure: 1025,
+    humidity: 35,
+    dew_point: -1.56,
+    wind_speed: 2.28,
+    wind_deg: 78,
+    wind_gust: 5,
+    weather: [
+      {
+        id: 800,
+        main: 'Clear',
+        description: 'ясно',
+        icon: '01d'
+      }
+    ],
+    clouds: 6,
+    pop: 0,
+    uvi: 3
+  }
+]
+
+export type Daily = typeof daily
+
 const oneCall = {
   lat: 50,
   lon: 36.25,
@@ -1755,3 +2076,7 @@ const oneCall = {
 }
 
 export type OneCall = typeof oneCall
+
+export const LOCALSTORAGE_DATA_NAME = 'NewCitys'
+
+export const KEY = '4276bdd223155b7e5bdf58f8ea7014c9'

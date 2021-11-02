@@ -23,6 +23,7 @@
         "react-hooks"
     ],
     "rules": {
+        "react/jsx-props-no-spreading": "off",
         "linebreak-style": "off", 
         "comma-dangle": "off",
         "semi": "off",
@@ -71,6 +72,15 @@
                 }
         ]
     },
+//      "overrides": [
+//     {
+//       // enable the rule specifically for TypeScript files
+//       "files": ["*.ts", "*.tsx"],
+//       "rules": {
+//         "@typescript-eslint/explicit-function-return-type": ["error"]
+//       }
+//     }
+//   ],
     "settings": {
         "import/resolver": {
             "typescript": {}
