@@ -44,7 +44,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://denisavilov.github.io/weatherForecast/",
+  "homepage": "https://denisavilov.github.io/weatherForecast#",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DenisAvilov/weatherForecast.git"
