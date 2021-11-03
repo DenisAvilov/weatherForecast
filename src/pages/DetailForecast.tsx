@@ -248,7 +248,7 @@ export const DetailForecast = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
-        <Button href="/"> На главную </Button>
+        <Button href="https://denisavilov.github.io/weatherForecast"> На главную </Button>
         <Typography component="h2" className={classes.typographyH2}>
           <strong>Погода на cегодня</strong>
           {' '}
