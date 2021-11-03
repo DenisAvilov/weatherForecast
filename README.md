@@ -1,3 +1,5 @@
+View app weather forecast [https://denisavilov.github.io/weatherForecast/](https://denisavilov.github.io/weatherForecast/)
+
 # Test assignment for React dev
 
 Objective: Implement a SPA showing the weather in selected cities.
