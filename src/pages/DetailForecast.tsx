@@ -42,9 +42,14 @@ const useStyles = makeStyles(({
     backgroundColor: '#96c1e22b'
   },
   cardDaily: {
-    '& .css-13i4rnv-MuiGrid-root': {
-      marginBottom: '30px',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'center !important',
+      gap: '15px'
     },
+    backgroundColor: '#c3c6cb',
+    gap: '15px',
+    paddingTop: '15px',
+    paddingBottom: '15px',
     '& img': {
       width: '80px',
       backgroundColor: 'orange'
@@ -239,7 +244,7 @@ export const DetailForecast = () => {
     )
   }
   useEffect(() => {
-    const reg = /[a-z][a-z0-9]*=\d+(\.\d+)?/g
+    const reg = /[a-z][a-z0-9]*=(-\d+(\.\d+)?)*(\d+(\.\d+)?)/g
     const coord = window.location.href.match(reg)
     if (coord) {
       createDetailed(coord[0], coord[1])
@@ -261,7 +266,7 @@ export const DetailForecast = () => {
         </Typography>
         <Grid
           container
-          justifyContent="space-between"
+          justifyContent="space-around"
           alignSelf="center"
           alignItems="center"
           className={classes.cardDaily}
@@ -283,7 +288,7 @@ export const DetailForecast = () => {
                       {' '}
                       { moment.unix(el.dt).date()}
                       .
-                      { moment.unix(el.dt).month()}
+                      { moment.unix(el.dt).month() + 1}
                     </Typography>
                     <br />
                     <Typography component="span">
